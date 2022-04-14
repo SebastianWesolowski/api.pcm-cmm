@@ -33,7 +33,11 @@ const airTable = async (req: NextApiRequest, res: NextApiResponse): Promise<unkn
           return resolve(response.status);
         })
         .catch((error) => {
-          res.statusCode = error.status;
+          res.statusCode = error.response;
+          console.log(
+            '🚀 ~ file: airtable.ts ~ line 38 ~ returnnewPromise ~ error.response;',
+            error.response
+          );
           res.end();
           return resolve(error.status);
         });
