@@ -27,15 +27,15 @@ const airTable = async (req: NextApiRequest, res: NextApiResponse): Promise<unkn
         .post(endPointAirTable.baseUrl.minisymposium + '?', {
           fields: { ...req.body },
         })
-        .then(() => {
-          res.statusCode = 200;
+        .then((response) => {
+          res.statusCode = response.status;
           res.end();
-          return resolve(200);
+          return resolve(response.status);
         })
-        .catch(() => {
-          res.statusCode = 500;
+        .catch((error) => {
+          res.statusCode = error.status;
           res.end();
-          return resolve(500);
+          return resolve(error.status);
         });
     }
     res.statusCode = 500;
