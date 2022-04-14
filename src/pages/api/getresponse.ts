@@ -1,23 +1,26 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import NextCors from 'nextjs-cors';
 
 import { endPointGetResponse } from 'services/apiEndpoint';
 import { getResponseAxiosInstance } from 'services/mail/axiosInstance';
 
 const getResponse = async (req: NextApiRequest, res: NextApiResponse): Promise<unknown> => {
-  const { method } = req;
-  const {
-    body: { email, firstName, lastName },
-  } = req;
+  await NextCors(req, res, {
+    methods: ['POST'],
+    origin: '*',
+    optionsSuccessStatus: 202, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
 
+  const { method } = req;
   return new Promise((resolve) => {
     if (method === 'POST') {
       getResponseAxiosInstance
         .post(endPointGetResponse.baseUrl.contacts, {
-          name: `${firstName} ${lastName}`,
+          name: `${req.body.firstName} ${req.body.lastName}`,
           campaign: {
             campaignId: 'iFwsA',
           },
-          email,
+          email: req.body.email,
         })
         .then((response) => {
           res.statusCode = response.status;
@@ -25,12 +28,12 @@ const getResponse = async (req: NextApiRequest, res: NextApiResponse): Promise<u
           return resolve(response.status);
         })
         .catch((error) => {
-          res.statusCode = error.response;
+          console.log('🚀 ~ file: getresponse.ts ~ line 31 ~ returnnewPromise ~ error', error);
+          res.statusCode = 400;
           res.end();
-          return resolve(error.response);
+          return resolve(400);
         });
     }
-    return resolve(500);
   });
 };
 export default getResponse;

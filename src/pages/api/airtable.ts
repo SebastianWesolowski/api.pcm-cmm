@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import NextCors from 'nextjs-cors';
 
 import { endPointAirTable } from 'services/apiEndpoint';
 import { airTableAxiosInstance } from 'services/mail/axiosInstance';
@@ -20,6 +21,12 @@ export interface IFormSignInValues {
 }
 
 const airTable = async (req: NextApiRequest, res: NextApiResponse): Promise<unknown> => {
+  await NextCors(req, res, {
+    methods: ['POST'],
+    origin: '*',
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
+
   const { method } = req;
   return new Promise((resolve) => {
     if (method === 'POST') {
@@ -34,17 +41,10 @@ const airTable = async (req: NextApiRequest, res: NextApiResponse): Promise<unkn
         })
         .catch((error) => {
           res.statusCode = error.response;
-          console.log(
-            '🚀 ~ file: airtable.ts ~ line 38 ~ returnnewPromise ~ error.response;',
-            error.response
-          );
           res.end();
           return resolve(error.status);
         });
     }
-    res.statusCode = 500;
-    res.end();
-    return resolve(500);
   });
 };
 export default airTable;
