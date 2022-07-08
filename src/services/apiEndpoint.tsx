@@ -1,14 +1,43 @@
-const PROD_AIR_TABLE_API_KEY = String(process.env.REACT_APP_PROD_AIR_TABLE_API_KEY);
-const PROD_AIR_TABLE_BASE = String(process.env.REACT_APP_PROD_AIR_TABLE_BASE);
-const PROD_GET_RESPONSE_API = String(process.env.REACT_APP_PROD_GET_RESPONSE_API);
-const PROD_GET_RESPONSE_CAMPAIGN_ID = String(process.env.REACT_APP_PROD_GET_RESPONSE_CAMPAIGN_ID);
+let PROD_AIR_TABLE_API_KEY;
+let PROD_AIR_TABLE_BASE;
+let PROD_GET_RESPONSE_API;
+let PROD_GET_RESPONSE_CAMPAIGN_ID;
+let AIR_TABLE_API_KEY;
+let AIR_TABLE_BASE;
+let GET_RESPONSE_API;
+let GET_RESPONSE_CAMPAIGN_ID;
 
-const AIR_TABLE_API_KEY = String(process.env.REACT_APP_AIR_TABLE_API_KEY);
-const AIR_TABLE_BASE = String(process.env.REACT_APP_AIR_TABLE_BASE);
+if (
+  process.env.PROD_AIR_TABLE_API_KEY ||
+  process.env.PROD_AIR_TABLE_BASE ||
+  process.env.PROD_GET_RESPONSE_API ||
+  process.env.PROD_GET_RESPONSE_CAMPAIGN_ID
+) {
+  PROD_AIR_TABLE_API_KEY = String(process.env.PROD_AIR_TABLE_API_KEY);
+  PROD_AIR_TABLE_BASE = String(process.env.PROD_AIR_TABLE_BASE);
+  PROD_GET_RESPONSE_API = String(process.env.PROD_GET_RESPONSE_API);
+  PROD_GET_RESPONSE_CAMPAIGN_ID = String(process.env.PROD_GET_RESPONSE_CAMPAIGN_ID);
+} else {
+  throw new Error(
+    'PROD_AIR_TABLE_API_KEY or PROD_AIR_TABLE_BASE or PROD_GET_RESPONSE_API or PROD_GET_RESPONSE_CAMPAIGN_ID environment variable is not set'
+  );
+}
 
-const GET_RESPONSE_API = String(process.env.REACT_APP_GET_RESPONSE_API);
-
-const GET_RESPONSE_CAMPAIGN_ID = String(process.env.REACT_APP_GET_RESPONSE_CAMPAIGN_ID);
+if (
+  process.env.AIR_TABLE_API_KEY ||
+  process.env.AIR_TABLE_BASE ||
+  process.env.GET_RESPONSE_API ||
+  process.env.GET_RESPONSE_CAMPAIGN_ID
+) {
+  AIR_TABLE_API_KEY = String(process.env.AIR_TABLE_API_KEY);
+  AIR_TABLE_BASE = String(process.env.AIR_TABLE_BASE);
+  GET_RESPONSE_API = String(process.env.GET_RESPONSE_API);
+  GET_RESPONSE_CAMPAIGN_ID = String(process.env.GET_RESPONSE_CAMPAIGN_ID);
+} else {
+  throw new Error(
+    'AIR_TABLE_API_KEY or AIR_TABLE_BASE or GET_RESPONSE_API or GET_RESPONSE_CAMPAIGN_ID environment variable is not set'
+  );
+}
 
 export let endPointAirTable = {
   baseUrl: {
@@ -59,38 +88,3 @@ const getResponseContacts = `${endPointGetResponse.baseUrl.api}/contacts`;
 
 endPointAirTable.baseUrl.minisymposium = airTableMinisymposium;
 endPointGetResponse.baseUrl.contacts = getResponseContacts;
-
-// export const fireBaseURL =
-//   "https://darmowewebinary-default-rtdb.europe-west1.firebasedatabase.app";
-// export const blogBaseURL = "https://blog.darmowewebinary.pl/wp-json/wp/v2/";
-// export const endPoint = {
-//   categories: "/categories/",
-//   logout: "/api/logout/",
-//   login: "/api/login/",
-//   facebookAuth: "/social-login/facebook/",
-//   googleAuth: "/social-login/google/",
-//   googleAuthLocal: "/social-login/google-local/",
-//   linkedInAuth: "/social-login/linkedin/",
-//   authRefresh: "/auth/token/refresh/",
-//   webinars: "/webinars/",
-//   user: "/user/",
-//   join: "/join/",
-//   leave: "/leave/",
-//   register: "/auth/registration/",
-//   verifyingEmail: "/auth/registration/verify-email/",
-//   checkUserEmail: "/check-email-username/",
-//   newsletter: "/newsletter/",
-//   stream: {
-//     webinarToken: "/webinar-token/",
-//     videoId: "/video-id/",
-//     start: "/start-stream/",
-//     stop: "/stop-stream/",
-//   },
-//   chat: {
-//     message: "/send-chat-message/",
-//     chat: "/chat/public",
-//   },
-//   blog: {
-//     post: "/posts",
-//   },
-// };
