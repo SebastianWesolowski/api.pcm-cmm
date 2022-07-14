@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextCors from 'nextjs-cors';
 
-import createMinisymposium from 'services/miniSymposium/createAirtable';
+import createUser from 'services/user/createUser';
 
-const minisymposium = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+const user = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   await NextCors(req, res, {
     // Options
     methods: ['GET', 'POST'],
@@ -18,10 +18,16 @@ const minisymposium = async (req: NextApiRequest, res: NextApiResponse): Promise
     case 'POST': {
       try {
         const payload = req.body;
-        const minisymposiumLead = await createMinisymposium(payload);
-        res.status(200).json({ status: 'created', minisymposiumLead });
-      } catch (error) {
-        res.status(422).json({ status: 'not_created', error });
+        const newUser = await createUser(payload);
+        res.status(201).json({ status: 'created', newUser });
+      } catch ({ message }) {
+        if (message === 'email_taken') {
+          const payload = req.body;
+          res.status(207).json({ status: 'Conflict', email: payload.email });
+          res.end();
+        } else {
+          res.status(422).json({ status: 'not_created', message });
+        }
       }
       break;
     }
@@ -32,4 +38,4 @@ const minisymposium = async (req: NextApiRequest, res: NextApiResponse): Promise
   }
 };
 
-export default minisymposium;
+export default user;

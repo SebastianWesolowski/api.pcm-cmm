@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 import airDB from 'services/airtableClient';
-import { IFormSignInValues } from 'types/FormSignIn';
+import { IFormMiniSymposiumValues } from 'types/FormSignIn';
 
 const schema = Joi.object({
   gender: Joi.string()
@@ -22,7 +22,7 @@ const schema = Joi.object({
 });
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-const create = async (payload: IFormSignInValues) => {
+const create = async (payload: IFormMiniSymposiumValues) => {
   const validatedOffer = await schema.validateAsync(payload);
   const offer = await airDB('offers').create([
     {

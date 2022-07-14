@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextCors from 'nextjs-cors';
 
-import createMinisymposium from 'services/miniSymposium/createAirtable';
+import createGetResponse from 'services/miniSymposium/createGetResponse';
 
-const minisymposium = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+const getResponse = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   await NextCors(req, res, {
     // Options
     methods: ['GET', 'POST'],
@@ -18,8 +18,8 @@ const minisymposium = async (req: NextApiRequest, res: NextApiResponse): Promise
     case 'POST': {
       try {
         const payload = req.body;
-        const minisymposiumLead = await createMinisymposium(payload);
-        res.status(200).json({ status: 'created', minisymposiumLead });
+        const getResponseLead = await createGetResponse(payload);
+        res.status(202).json({ status: 'created', getResponseLead });
       } catch (error) {
         res.status(422).json({ status: 'not_created', error });
       }
@@ -32,4 +32,4 @@ const minisymposium = async (req: NextApiRequest, res: NextApiResponse): Promise
   }
 };
 
-export default minisymposium;
+export default getResponse;

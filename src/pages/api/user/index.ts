@@ -3,7 +3,7 @@ import NextCors from 'nextjs-cors';
 
 import createMinisymposium from 'services/miniSymposium/createAirtable';
 
-const minisymposium = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+const user = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   await NextCors(req, res, {
     // Options
     methods: ['GET', 'POST'],
@@ -32,4 +32,4 @@ const minisymposium = async (req: NextApiRequest, res: NextApiResponse): Promise
   }
 };
 
-export default minisymposium;
+export default user;

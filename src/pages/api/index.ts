@@ -1,6 +1,6 @@
 import { NextApiResponse } from 'next';
 
-const api = async (res: NextApiResponse): Promise<any> => {
+const api = async (res: NextApiResponse): Promise<void> => {
   try {
     res.json({ message: 'ok' });
   } catch (e) {
