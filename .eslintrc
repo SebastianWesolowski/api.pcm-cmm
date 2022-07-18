@@ -9,8 +9,9 @@
     "prettier"
   ],
   "rules": {
+    "import/no-anonymous-default-export": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
     "prettier/prettier": "warn",
-    "@typescript-eslint/explicit-module-boundary-types": "warn",
     "@typescript-eslint/no-explicit-any": "warn",
     "noImplicitAny": "off"
   },
@@ -57,7 +58,7 @@
         "import/prefer-default-export": "off", // Named export is easier to refactor automatically
         "class-methods-use-this": "off", // _document.tsx use render method without `this` keyword
         "@typescript-eslint/no-unused-vars": "warn",
-        "@typescript-eslint/explicit-module-boundary-types": "warn",
+        "@typescript-eslint/explicit-module-boundary-types": "off",
         "@typescript-eslint/no-explicit-any": "warn",
         "@typescript-eslint/naming-convention": "off",
         "noImplicitAny": "off",
