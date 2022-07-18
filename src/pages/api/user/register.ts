@@ -23,7 +23,7 @@ const user = async (req: NextApiRequest, res: NextApiResponse): Promise<void> =>
       } catch ({ message }) {
         if (message === 'email_taken') {
           const payload = req.body;
-          res.status(207).json({ status: 'Conflict', email: payload.email });
+          res.status(207).json({ status: 'Conflict on AirTable', email: payload.email });
           res.end();
         } else {
           res.status(422).json({ status: 'not_created', message });

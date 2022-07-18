@@ -1,9 +1,9 @@
-// import crypto from 'crypto';
-
+import generator from 'generate-password';
 import Joi from 'joi';
 
 import airDB from 'services/airtableClient';
-// import { IFormSignInValues } from 'types/FormSignIn';
+import { endPointGetResponse } from 'services/apiEndpoint';
+import getResponseAxiosInstance from 'services/getResponseClient';
 
 const schema = Joi.object({
   gender: Joi.string()
@@ -19,7 +19,6 @@ const schema = Joi.object({
   keyword_3: Joi.string().empty('').min(2).max(32),
   keyword_4: Joi.string().empty('').min(2).max(32),
   privacyPolicy: Joi.boolean().required(),
-  // password: Joi.string().required(),
 });
 
 const checkEmail = async (email: string) => {
@@ -46,15 +45,21 @@ const create = async (payload: unknown) => {
     keyword_3,
     keyword_4,
     privacyPolicy,
-    // password,
   } = await schema.validateAsync(payload);
 
   await checkEmail(email);
 
-  // const passwordSalt = crypto.randomBytes(16).toString('hex');
-  // const passwordHash = crypto
-  //   .pbkdf2Sync(password, passwordSalt, 1000, 64, `sha512`)
-  //   .toString(`hex`);
+  const firstPassword = generator.generate({
+    length: 10,
+    numbers: true,
+  });
+
+  const uniqueID = generator.generate({
+    length: 5,
+    numbers: true,
+  });
+
+  console.log('🚀 ~ file: createUser.ts ~ line 56 ~ create ~ firstPassword', firstPassword);
 
   const user = await airDB('users').create([
     {
@@ -64,30 +69,43 @@ const create = async (payload: unknown) => {
         firstName,
         lastName,
         email,
+        firstPassword,
+        uniqueID,
         affiliation,
         keyword_1,
         keyword_2,
         keyword_3,
         keyword_4,
         privacyPolicy,
-        // passwordSalt,
-        // passwordHash,
         role: 'regular',
       },
     },
   ]);
 
-  return user;
+  console.log('🚀 ~ file: createUser.ts ~ line 76 ~ create ~ user', user);
 
-  // const validatedOffer = await schema.validateAsync(payload);
-  // const offer = await airDB('offers').create([
-  //   {
-  //     fields: {
-  //       ...validatedOffer,
-  //     },
-  //   },
-  // ]);
-  // return offer;
+  try {
+    const emailLead = await getResponseAxiosInstance.post(endPointGetResponse.baseUrl.contacts, {
+      name: `${firstName} ${lastName}`,
+      campaign: {
+        campaignId: endPointGetResponse.auth.campaignId.user,
+      },
+      customFieldValues: [
+        {
+          customFieldId: 'pkNggD',
+          value: [firstPassword],
+        },
+      ],
+      email: email,
+    });
+
+    console.log('🚀 ~ file: createUser.ts ~ line 84 ~ create ~ emailLead', emailLead);
+  } catch (error) {
+    console.log('🚀 ~ file: createUser.ts ~ line 97 ~ create ~ message', error);
+  }
+  console.log('🚀 ~ file: createUser.ts ~ line 100 ~ create ~ message');
+
+  return user;
 };
 
 export default create;

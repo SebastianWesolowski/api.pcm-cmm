@@ -16,12 +16,10 @@ const create = async (payload: IFormMiniSymposiumGetResponseValues) => {
   const emailLead = await getResponseAxiosInstance.post(endPointGetResponse.baseUrl.contacts, {
     name: `${validatedEmailLead.firstName} ${validatedEmailLead.lastName}`,
     campaign: {
-      campaignId: 'iFwsA',
+      campaignId: endPointGetResponse.auth.campaignId.minisymposium,
     },
     email: validatedEmailLead.email,
   });
-
-  console.log('🚀 ~ file: createGetResponse.ts ~ line 23 ~ create ~ emailLead', emailLead);
 
   return emailLead.status;
 };
