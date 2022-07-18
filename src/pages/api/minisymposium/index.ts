@@ -1,57 +1,42 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextCors from 'nextjs-cors';
 
+import { withSentry } from 'helpers/monitoring/sentry';
 import createMinisymposium from 'services/miniSymposium/createAirtable';
-
-const minisymposium = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<any> => {
   await NextCors(req, res, {
-    // Options
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    methods: ['GET', 'POST'],
     origin: '*',
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
 
+  if (req.query.error) {
+    throw new Error('Sentry API error test');
+  }
+
   const { method } = req;
+  console.log('🚀 ~ file: a.ts ~ line 23 ~ handler ~ method', method);
 
-  return new Promise((resolve) => {
-    if (method === 'GET') {
-      return res.status(200).json({ message: 'Method not allowed. - GET - minisymposium' });
+  if (method === 'GET') {
+    res.json({
+      success: true,
+      message: 'Method GET not allowed - api/minisymposium',
+    });
+  }
+
+  console.log('🚀 ~ file: a.ts ~ line 32 ~ handler ~ method', method);
+  if (method === 'POST') {
+    try {
+      const payload = req.body;
+      const minisymposiumLead = await createMinisymposium(payload);
+
+      console.log('🚀 ~ file: a.ts ~ line 33 ~ handler ~ minisymposiumLead', minisymposiumLead);
+      res.status(200).json({ status: 'created', minisymposiumLead });
+    } catch (error) {
+      res.status(422).json({ status: 'not_created', error });
     }
-
-    if (method === 'POST') {
-      try {
-        const payload = req.body;
-        const minisymposiumLead = createMinisymposium(payload);
-        res.status(200).json({ status: 'created', minisymposiumLead });
-      } catch (error) {
-        res.status(422).json({ status: 'not_created', error });
-      }
-    }
-
-    console.log('🚀 ~ file: index.ts ~ line 17 ~ returnnewPromise ~ resolve', resolve);
-    res.status(400);
-    return res.status(400).json({ message: 'bad_request' });
-  });
-
-  // switch (req.method) {
-  //   case 'GET': {
-  //     return res.status(200).json({ message: 'Method not allowed.' });
-  //   }
-  //   case 'POST': {
-  //     try {
-  //       const payload = req.body;
-  //       const minisymposiumLead = await createMinisymposium(payload);
-  //       res.status(200).json({ status: 'created', minisymposiumLead });
-  //     } catch (error) {
-  //       res.status(422).json({ status: 'not_created', error });
-  //     }
-  //     break;
-  //   }
-
-  //   default:
-  //     res.status(400);
-  //     return res.status(400).json({ message: 'bad_request' });
-  // }
+  }
 };
 
-export default minisymposium;
+export default withSentry(handler);
+// return new Response();

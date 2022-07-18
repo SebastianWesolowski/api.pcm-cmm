@@ -291,7 +291,7 @@
     "@sentry/utils" "7.7.0"
     "tslib" "^1.9.3"
 
-"@sentry/integrations@7.7.0":
+"@sentry/integrations@^7.7.0", "@sentry/integrations@7.7.0":
   "integrity" "sha512-qHIw4JrluVfkcdA6v22KVumhuqdk9I0MxEaiHyP/uzx4xIoi9S4I86YbLHZUpjqreJIQkntsimJSepZJkxvG5g=="
   "resolved" "https://registry.npmjs.org/@sentry/integrations/-/integrations-7.7.0.tgz"
   "version" "7.7.0"
@@ -324,7 +324,7 @@
     "@sentry/webpack-plugin" "1.18.9"
     "tslib" "^1.9.3"
 
-"@sentry/node@7.7.0":
+"@sentry/node@^7.7.0", "@sentry/node@7.7.0":
   "integrity" "sha512-i62x23NHEhLe6CJ6l9E30uRCUMm0VMz9aUmmrjW+9uxS1mZhHTG2kpbU16ozyh9KTLswKDOSE75Z+MzQpGSQ/Q=="
   "resolved" "https://registry.npmjs.org/@sentry/node/-/node-7.7.0.tgz"
   "version" "7.7.0"

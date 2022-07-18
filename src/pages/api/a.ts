@@ -1,31 +1,44 @@
-import { withSentry } from '@sentry/nextjs';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import NextCors from 'nextjs-cors';
 
-import createUser from 'services/user/create';
-
-const create = async (req: NextApiRequest, res: NextApiResponse) => {
+import { withSentry } from 'helpers/monitoring/sentry';
+import createMinisymposium from 'services/miniSymposium/createAirtable';
+const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<any> => {
   await NextCors(req, res, {
     methods: ['GET', 'POST'],
     origin: '*',
-    optionsSuccessStatus: 200,
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
 
-  switch (req.method) {
-    case 'POST': {
-      try {
-        const payload = req.body;
-        const user = await createUser(payload);
+  if (req.query.error) {
+    throw new Error('Sentry API error test');
+  }
 
-        res.status(200).json({ status: 'created', user });
-      } catch (error: any) {
-        res.status(422).json({ status: 'not_created', error: error.message });
-      }
-      break;
+  const { method } = req;
+  console.log('🚀 ~ file: a.ts ~ line 23 ~ handler ~ method', method);
+
+  if (method === 'GET') {
+    res.json({
+      success: true,
+      message: 'Method GET not allowed - api/minisymposium',
+    });
+  }
+
+  console.log('🚀 ~ file: a.ts ~ line 32 ~ handler ~ method', method);
+  if (method === 'POST') {
+    try {
+      const payload = req.body;
+      const minisymposiumLead = createMinisymposium(payload);
+
+      console.log('🚀 ~ file: a.ts ~ line 33 ~ handler ~ minisymposiumLead', minisymposiumLead);
+      res.status(200).json({ message: 'Hello from Next.js!' });
+
+      res.status(200).json({ status: 'created', minisymposiumLead });
+    } catch (error) {
+      res.status(422).json({ status: 'not_created', error });
     }
-    default:
-      res.status(400);
   }
 };
 
-export default withSentry(create);
+export default withSentry(handler);
+// return new Response();
