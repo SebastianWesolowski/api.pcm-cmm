@@ -1,8 +1,16 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { withSentry } from '@sentry/nextjs';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import NextCors from 'nextjs-cors';
 
 import createUser from 'services/user/create';
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const create = async (req: NextApiRequest, res: NextApiResponse) => {
+  await NextCors(req, res, {
+    methods: ['GET', 'POST'],
+    origin: '*',
+    optionsSuccessStatus: 200,
+  });
+
   switch (req.method) {
     case 'POST': {
       try {
@@ -19,3 +27,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(400);
   }
 };
+
+export default withSentry(create);

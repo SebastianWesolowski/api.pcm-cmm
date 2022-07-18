@@ -9,6 +9,9 @@
     "prettier"
   ],
   "rules": {
+    "dot-notation": "off",
+    "@typescript-eslint/dot-notation": ["off"],
+    "@typescript-eslint/naming-convention": "off",
     "import/no-anonymous-default-export": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "prettier/prettier": "warn",
@@ -23,7 +26,7 @@
   "overrides": [
     // Configuration for TypeScript files
     {
-      "files": ["**/*.ts", "**/*.tsx"],
+      "files": ["**/*.ts", "**/*.tsx", "**/*.jsx"],
 
       "parserOptions": {
         "project": "./tsconfig.json"

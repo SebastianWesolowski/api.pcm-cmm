@@ -1,0 +1,7 @@
+[defaults]
+url = https://sentry.io/
+org = wesolowskidev
+project = nextjs
+
+[auth]
+token = 9f5bee1b38fd467cb0d421709a0135b0cf34a251c9904a2a80727d76e990fb82
