@@ -1,15 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-// import NextCors from 'nextjs-cors';
+import NextCors from 'nextjs-cors';
 
 import createMinisymposium from 'services/miniSymposium/createAirtable';
 
 const minisymposium = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
-  // await NextCors(req, res, {
-  //   // Options
-  //   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-  //   origin: '*',
-  //   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  // });
+  await NextCors(req, res, {
+    // Options
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    origin: '*',
+    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+  });
 
   const { method } = req;
 
