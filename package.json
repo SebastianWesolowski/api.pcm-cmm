@@ -7,7 +7,7 @@
     "start": "run-s build:prod next:start",
     "build": "run-s copy:assets next:build",
     "build:prod": "run-s copy:assets next:build",
-    "next:build": "next build",
+    "next:build": "NODE_ENV=development next build",
     "next:export": "next export",
     "next:dev": "next dev",
     "next:start": "next start",
@@ -21,6 +21,7 @@
   "dependencies": {
     "@sendgrid/client": "^7.6.1",
     "@sendgrid/mail": "^7.6.1",
+    "@sentry/nextjs": "^7.7.0",
     "airtable": "^0.11.4",
     "axios": "^0.26.1",
     "generate-password": "^1.7.0",
