@@ -6,7 +6,7 @@ import createUser from 'services/user/createUser';
 const user = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   await NextCors(req, res, {
     // Options
-    methods: ['GET', 'POST'],
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
     origin: '*',
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
