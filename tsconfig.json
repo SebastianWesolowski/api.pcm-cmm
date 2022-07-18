@@ -22,6 +22,8 @@
     "outDir": ".next",
     "declaration": true,
     "sourceMap": true,
+    "inlineSources": true,
+    "sourceRoot": "/",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "allowJs": false,
