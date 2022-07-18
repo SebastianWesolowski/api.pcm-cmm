@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import NextCors from 'nextjs-cors';
 
 import { withSentry } from 'helpers/monitoring/sentry';
-import createGetResponse from 'services/miniSymposium/createGetResponse';
+import createUser from 'services/user/createUser';
 const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<any> => {
   await NextCors(req, res, {
     methods: ['GET', 'POST'],
@@ -19,20 +19,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<any> 
   if (method === 'GET') {
     res.json({
       success: true,
-      message: 'Method GET not allowed - api/minisymposium/get-response',
+      message: 'Method GET not allowed - api/user/register',
     });
   }
 
   if (method === 'POST') {
     try {
       const payload = req.body;
-      const getResponseLead = await createGetResponse(payload);
-      res.status(202).json({ status: 'created', getResponseLead });
-    } catch (error) {
-      res.status(422).json({ status: 'not_created', error });
+      const newUser = await createUser(payload);
+      res.status(201).json({ status: 'created', newUser });
+    } catch ({ message }) {
+      if (message === 'email_taken') {
+        const payload = req.body;
+        res.status(207).json({ status: 'Conflict on AirTable', email: payload.email });
+      } else {
+        res.status(422).json({ status: 'not_created', message });
+      }
     }
   }
 };
 
 export default withSentry(handler);
-// return new Response();
