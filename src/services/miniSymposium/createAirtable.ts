@@ -23,11 +23,11 @@ const schema = Joi.object({
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const create = async (payload: IFormMiniSymposiumValues) => {
-  const validatedOffer = await schema.validateAsync(payload);
-  const offer = await airDB('offers').create([
+  const validateUsers = await schema.validateAsync(payload);
+  const offer = await airDB('Minisymposium').create([
     {
       fields: {
-        ...validatedOffer,
+        ...validateUsers,
       },
     },
   ]);
