@@ -18,7 +18,7 @@ const minisymposium = async (req: NextApiRequest, res: NextApiResponse): Promise
   if (method === 'POST') {
     try {
       const payload = req.body;
-      const minisymposiumLead = await createMinisymposium(payload);
+      const minisymposiumLead = createMinisymposium(payload);
       return res.status(200).json({ status: 'created', minisymposiumLead });
     } catch (error) {
       return res.status(422).json({ status: 'not_created', error });
