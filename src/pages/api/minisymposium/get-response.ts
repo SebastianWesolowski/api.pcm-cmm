@@ -1,35 +1,37 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import NextCors from 'nextjs-cors';
 
+import { withSentry } from 'helpers/monitoring/sentry';
 import createGetResponse from 'services/miniSymposium/createGetResponse';
-
-const getResponse = async (req: NextApiRequest, res: NextApiResponse): Promise<void> => {
+const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<any> => {
   await NextCors(req, res, {
-    // Options
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    methods: ['GET', 'POST'],
     origin: '*',
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
 
-  switch (req.method) {
-    case 'GET': {
-      return res.status(200).json({ message: 'Method not allowed.' });
-    }
-    case 'POST': {
-      try {
-        const payload = req.body;
-        const getResponseLead = await createGetResponse(payload);
-        res.status(202).json({ status: 'created', getResponseLead });
-      } catch (error) {
-        res.status(422).json({ status: 'not_created', error });
-      }
-      break;
-    }
+  if (req.query.error) {
+    throw new Error('Sentry API error test');
+  }
 
-    default:
-      res.status(400);
-      return res.status(400).json({ message: 'bad_request' });
+  const { method } = req;
+
+  if (method === 'GET') {
+    res.json({
+      success: true,
+      message: 'Method GET not allowed - api/minisymposium/get-response',
+    });
+  }
+
+  if (method === 'POST') {
+    try {
+      const payload = req.body;
+      const getResponseLead = await createGetResponse(payload);
+      res.status(202).json({ status: 'created', getResponseLead });
+    } catch (error) {
+      res.status(422).json({ status: 'not_created', error });
+    }
   }
 };
 
-export default getResponse;
+export default withSentry(handler);

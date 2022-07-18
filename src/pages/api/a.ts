@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import NextCors from 'nextjs-cors';
 
 import { withSentry } from 'helpers/monitoring/sentry';
-import createMinisymposium from 'services/miniSymposium/createAirtable';
+import createGetResponse from 'services/miniSymposium/createGetResponse';
 const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<any> => {
   await NextCors(req, res, {
     methods: ['GET', 'POST'],
@@ -15,25 +15,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<any> 
   }
 
   const { method } = req;
-  console.log('🚀 ~ file: a.ts ~ line 23 ~ handler ~ method', method);
 
   if (method === 'GET') {
     res.json({
       success: true,
-      message: 'Method GET not allowed - api/minisymposium',
+      message: 'Method GET not allowed - api/minisymposium/get-response',
     });
   }
 
-  console.log('🚀 ~ file: a.ts ~ line 32 ~ handler ~ method', method);
   if (method === 'POST') {
     try {
       const payload = req.body;
-      const minisymposiumLead = createMinisymposium(payload);
-
-      console.log('🚀 ~ file: a.ts ~ line 33 ~ handler ~ minisymposiumLead', minisymposiumLead);
-      res.status(200).json({ message: 'Hello from Next.js!' });
-
-      res.status(200).json({ status: 'created', minisymposiumLead });
+      const getResponseLead = await createGetResponse(payload);
+      res.status(202).json({ status: 'created', getResponseLead });
     } catch (error) {
       res.status(422).json({ status: 'not_created', error });
     }

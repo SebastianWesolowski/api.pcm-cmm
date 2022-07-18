@@ -30,8 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<any> 
       const payload = req.body;
       const minisymposiumLead = await createMinisymposium(payload);
 
-      console.log('🚀 ~ file: a.ts ~ line 33 ~ handler ~ minisymposiumLead', minisymposiumLead);
-      res.status(200).json({ status: 'created', minisymposiumLead });
+      res.status(200).json({ message: 'created', minisymposiumLead });
     } catch (error) {
       res.status(422).json({ status: 'not_created', error });
     }
