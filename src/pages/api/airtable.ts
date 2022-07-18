@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import NextCors from 'nextjs-cors';
 
 export interface IFormSignInValues {
@@ -26,14 +26,9 @@ const airTable = async (req: NextApiRequest, res: NextApiResponse): Promise<unkn
 
   const { method } = req;
   return new Promise((resolve) => {
-    if (method === 'GET') {
-      console.log('🚀 ~ file: airtable.ts ~ line 29 ~ returnnewPromise ~ resolve', resolve);
-      return res.status(200).json({ message: 'Method not allowed. - GET ' });
-    }
-
+    console.log('🚀 ~ file: airtable.ts ~ line 29 ~ returnnewPromise ~ resolve', resolve);
     if (method === 'POST') {
-      return res.status(200).json({ message: 'Method not allowed. - post ' });
-
+      //   axios
       //   airTableAxiosInstance
       //     .post(endPointAirTable.baseUrl.minisymposium + '?', {
       //       fields: { ...req.body },

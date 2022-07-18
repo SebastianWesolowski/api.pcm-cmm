@@ -1,23 +1,21 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import NextCors from 'nextjs-cors';
 
-const minisymposium = async (req: NextApiRequest, res: NextApiResponse): Promise<unknown> => {
-  await NextCors(req, res, {
-    methods: ['POST'],
-    origin: '*',
-    optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-  });
+import createUser from 'services/user/create';
 
-  const { method } = req;
-  return new Promise((resolve) => {
-    if (method === 'GET') {
-      console.log('🚀 ~ file: airtable.ts ~ line 29 ~ returnnewPromise ~ resolve', resolve);
-      return res.status(200).json({ message: 'Method not allowed. - GET ' });
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+  switch (req.method) {
+    case 'POST': {
+      try {
+        const payload = req.body;
+        const user = await createUser(payload);
+
+        res.status(200).json({ status: 'created', user });
+      } catch (error: any) {
+        res.status(422).json({ status: 'not_created', error: error.message });
+      }
+      break;
     }
-
-    if (method === 'POST') {
-      return res.status(200).json({ message: 'Method not allowed. - post ' });
-    }
-  });
+    default:
+      res.status(400);
+  }
 };
-export default minisymposium;
