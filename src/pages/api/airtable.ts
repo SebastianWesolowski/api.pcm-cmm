@@ -15,7 +15,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<any> 
   }
 
   const { method } = req;
-  console.log('🚀 ~ file: a.ts ~ line 23 ~ handler ~ method', method);
 
   if (method === 'GET') {
     res.json({
@@ -24,7 +23,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<any> 
     });
   }
 
-  console.log('🚀 ~ file: a.ts ~ line 32 ~ handler ~ method', method);
   if (method === 'POST') {
     try {
       const payload = req.body;
