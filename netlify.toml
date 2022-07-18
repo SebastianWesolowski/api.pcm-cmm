@@ -10,4 +10,4 @@
 
   [plugins.inputs]
     sentryOrg = "wesolowskidev"
-    sentryProject = "nextjs"
+    sentryProject = "nextjs" 
