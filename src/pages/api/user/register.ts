@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { createRouter } from 'next-connect';
 
 import { withSentry } from 'helpers/monitoring/sentry';
+import isExistEmail from 'services/helpers/isExistEmail';
 // import createUser from 'services/user/createUser';
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
@@ -21,13 +22,12 @@ router
   })
   .post(async (req, res) => {
     // use async/await
-    const payload = req.body;
-    // const newUser = await createUser(payload);
-    const newUser = 'true';
+    const { email } = req.body;
+    const result = await isExistEmail('users', email);
     // if (newUser === 'email_taken') {
     //   res.status(207).json({ status: 'Conflict on AirTable', email: payload.email });
     // } else {
-    res.status(201).json({ status: 'created', newUser, payload });
+    res.status(201).json({ status: `${email} is`, result });
     // }
   });
 
