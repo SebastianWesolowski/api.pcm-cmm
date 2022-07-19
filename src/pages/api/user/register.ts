@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import NextCors from 'nextjs-cors';
 
 import { withSentry } from 'helpers/monitoring/sentry';
-import createUser from 'services/user/createUser';
 const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<any> => {
   await NextCors(req, res, {
     methods: ['GET', 'POST'],
@@ -26,8 +25,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse): Promise<any> 
   if (method === 'POST') {
     try {
       const payload = req.body;
-      const newUser = await createUser(payload);
-      res.status(201).json({ status: 'created', newUser });
+      // const newUser = await createUser(payload);
+      const newUser = true;
+      res.status(201).json({ status: 'created', newUser, payload });
     } catch ({ message }) {
       if (message === 'email_taken') {
         const payload = req.body;
