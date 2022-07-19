@@ -21,14 +21,15 @@ const schema = Joi.object({
   privacyPolicy: Joi.boolean().required(),
 });
 
-const checkEmail = async (email: string) => {
+const checkEmail = async (email: string): Promise<string | void> => {
   const existingUser = await airDB('users')
     .select({ filterByFormula: `email="${email}"` })
     .firstPage();
 
   if (existingUser && existingUser[0]) {
-    throw new Error('email_taken');
+    return 'email_taken';
   }
+  return;
 };
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -47,7 +48,10 @@ const create = async (payload: unknown) => {
     privacyPolicy,
   } = await schema.validateAsync(payload);
 
-  await checkEmail(email);
+  const isAvalibleEmail = await checkEmail(email);
+  if (isAvalibleEmail === 'email_taken') {
+    return 'email_taken';
+  }
 
   const firstPassword = generator.generate({
     length: 10,
