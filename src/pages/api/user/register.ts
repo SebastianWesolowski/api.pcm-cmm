@@ -1,7 +1,7 @@
-import { withSentry } from '@sentry/nextjs/types/utils/withSentry';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createRouter } from 'next-connect';
 
+import { withSentry } from 'helpers/monitoring/sentry';
 import createUser from 'services/user/createUser';
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
