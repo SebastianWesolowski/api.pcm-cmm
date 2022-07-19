@@ -8,12 +8,6 @@ import isExistEmail from 'services/helpers/isExistEmail';
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
 router
-  .use(async (_req, _res, next) => {
-    const start = Date.now();
-    await next(); // call next in chain
-    const end = Date.now();
-    console.log(`Request took ${end - start}ms`);
-  })
   .get(async (_req, res) => {
     res.status(200).json({
       success: true,

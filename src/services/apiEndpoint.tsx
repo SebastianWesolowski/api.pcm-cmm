@@ -53,6 +53,7 @@ export let endPointAirTable = {
   baseUrl: {
     api: 'https://api.airtable.com/v0',
     minisymposium: '',
+    users: '',
   },
   table: {
     minisymposium: 'Minisymposium/',
@@ -104,7 +105,9 @@ endPointGetResponse.auth.campaignId.minisymposium = getResponseAuth.minisymposiu
 endPointGetResponse.auth.campaignId.user = getResponseAuth.userCampaignId;
 
 const airTableMinisymposium = `${endPointAirTable.baseUrl.api}/${endPointAirTable.auth.base}/${endPointAirTable.table.minisymposium}`;
+const airTableUsers = `${endPointAirTable.baseUrl.api}/${endPointAirTable.auth.base}/${endPointAirTable.table.users}`;
 const getResponseContacts = `${endPointGetResponse.baseUrl.api}/contacts`;
 
 endPointAirTable.baseUrl.minisymposium = airTableMinisymposium;
+endPointAirTable.baseUrl.users = airTableUsers;
 endPointGetResponse.baseUrl.contacts = getResponseContacts;
